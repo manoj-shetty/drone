@@ -4,6 +4,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.1]
+### Added
+- support for repository-level concurrency limits.
+- support for gitlab and github internal visibility on initial sync.
+
+### Fixed
+- create machine user with a custom API token.
+
+## [1.10.0]
+### Added
+- support for starlark scripts in core.
+- support for executing pipelines in debug mode.
+
+## [1.9.2]
+### Added
+- update go-scm dependency to fix
+
+## [1.9.1]
+### Added
+- support for increasing the http request timeout for extensions. [#2998](https://github.com/drone/drone/pull/2998).
+- support for skipping a pipeline if the validation extension returns an ErrSkip.
+- support for blocking a pipeline if the validation extension returns an ErrBlock.
+
+### Fixed
+- rollback endpoint should be available to users with write permission.
+- retrying a build should re-use custom build parameters from parent build.
+
+## [1.9.0] - 2020-07-12
+### Added
+- ui support for deployment list and summary.
+- ui support for promoting and rolling back builds.
+- feature flag to use static secret when signing webhooks, from @chiraggadasc.
+
+### Fixed
+- ui branch list improperly capped.
+
+### Changed
+- upgrade drone/envsubst dependency
+- upgrade drone/go-scm dependency
+
+## [1.8.1] - 2020-06-23
+### Fixed
+- support for gitea api pagination, repository sync hanging.
+
+## [1.8.0] - 2020-06-10
+### Added
+- re-assigned repository ownership when deactivating a user.
+- re-assigned repository ownership when deleting a user.
+- de-activate a repository when deleting a user if re-assignment fails.
+- de-activate a repository when deactivating a user if re-assignment fails.
+- routine to cleanup builds stuck in a pending state.
+- routine to cleanup builds stuck in a running state.
+- private mode setting requires authentication to view public repositories.
+
+### Fixed
+- canceling a build emits a sql.ErrNoRows error.
+- custom token is ignored when creating a user account via the API.
+- machine accounts with sufficient permissions can create builds via the API.
+
+### Changed
+- upgraded Go toolchain to version 1.14.4.
+
 ## [1.7.0] - 2020-03-27
 ### Added
 - endpoint to display the latest build by branch. [#2940](https://github.com/drone/drone/pull/2940).

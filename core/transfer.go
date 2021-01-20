@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build oss
+package core
 
-package converter
+import "context"
 
-import (
-	"github.com/drone/drone/core"
-)
-
-// Starlark returns a conversion service that converts the
-// starlark file to a yaml file.
-func Starlark(enabled bool) core.ConvertService {
-	return new(noop)
+// Transferer handles transfering repository ownership from one
+// user to another user account.
+type Transferer interface {
+	Transfer(ctx context.Context, user *User) error
 }

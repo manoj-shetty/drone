@@ -470,6 +470,7 @@ SELECT
 ,build_cron
 ,build_deploy
 ,build_deploy_id
+,build_debug
 ,build_started
 ,build_finished
 ,build_created
@@ -607,6 +608,7 @@ INSERT INTO builds (
 ,build_cron
 ,build_deploy
 ,build_deploy_id
+,build_debug
 ,build_started
 ,build_finished
 ,build_created
@@ -640,6 +642,7 @@ INSERT INTO builds (
 ,:build_cron
 ,:build_deploy
 ,:build_deploy_id
+,:build_debug
 ,:build_started
 ,:build_finished
 ,:build_created
@@ -665,6 +668,7 @@ INSERT INTO stages (
 ,stage_errignore
 ,stage_exit_code
 ,stage_limit
+,stage_limit_repo
 ,stage_os
 ,stage_arch
 ,stage_variant
@@ -691,6 +695,7 @@ INSERT INTO stages (
 ,:stage_errignore
 ,:stage_exit_code
 ,:stage_limit
+,:stage_limit_repo
 ,:stage_os
 ,:stage_arch
 ,:stage_variant

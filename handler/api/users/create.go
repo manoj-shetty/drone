@@ -35,7 +35,7 @@ type userWithToken struct {
 // to create the named user account in the system.
 func HandleCreate(users core.UserStore, service core.UserService, sender core.WebhookSender) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		in := new(core.User)
+		in := new(userWithToken)
 		err := json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -51,7 +51,7 @@ func HandleCreate(users core.UserStore, service core.UserService, sender core.We
 			Machine: in.Machine,
 			Created: time.Now().Unix(),
 			Updated: time.Now().Unix(),
-			Hash:    in.Hash,
+			Hash:    in.Token,
 		}
 		if user.Hash == "" {
 			user.Hash = uniuri.NewLen(32)

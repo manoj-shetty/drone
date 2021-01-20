@@ -46,6 +46,7 @@ type Build struct {
 	Cron         string            `db:"build_cron"           json:"cron,omitempty"`
 	Deploy       string            `db:"build_deploy"         json:"deploy_to,omitempty"`
 	DeployID     int64             `db:"build_deploy_id"      json:"deploy_id,omitempty"`
+	Debug        bool              `db:"build_debug"          json:"debug,omitempty"`
 	Started      int64             `db:"build_started"        json:"started"`
 	Finished     int64             `db:"build_finished"       json:"finished"`
 	Created      int64             `db:"build_created"        json:"created"`
@@ -114,4 +115,29 @@ type BuildStore interface {
 
 	// Count returns a count of builds.
 	Count(context.Context) (int64, error)
+}
+
+// IsDone returns true if the build has a completed state.
+func (b *Build) IsDone() bool {
+	switch b.Status {
+	case StatusWaiting,
+		StatusPending,
+		StatusRunning,
+		StatusBlocked:
+		return false
+	default:
+		return true
+	}
+}
+
+// IsFailed returns true if the build has failed
+func (b *Build) IsFailed() bool {
+	switch b.Status {
+	case StatusFailing,
+		StatusKilled,
+		StatusError:
+		return true
+	default:
+		return false
+	}
 }

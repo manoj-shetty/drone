@@ -33,6 +33,10 @@ var migrations = []struct {
 		stmt: alterTableReposAddColumnCancelPush,
 	},
 	{
+		name: "alter-table-repos-add-column-throttle",
+		stmt: alterTableReposAddColumnThrottle,
+	},
+	{
 		name: "create-table-perms",
 		stmt: createTablePerms,
 	},
@@ -65,6 +69,10 @@ var migrations = []struct {
 		stmt: createIndexBuildsRef,
 	},
 	{
+		name: "alter-table-builds-add-column-debug",
+		stmt: alterTableBuildsAddColumnDebug,
+	},
+	{
 		name: "create-table-stages",
 		stmt: createTableStages,
 	},
@@ -83,6 +91,10 @@ var migrations = []struct {
 	{
 		name: "create-trigger-stage-update",
 		stmt: createTriggerStageUpdate,
+	},
+	{
+		name: "alter-table-stages-add-column-limit-repos",
+		stmt: alterTableStagesAddColumnLimitRepos,
 	},
 	{
 		name: "create-table-steps",
@@ -298,6 +310,10 @@ var alterTableReposAddColumnCancelPush = `
 ALTER TABLE repos ADD COLUMN repo_cancel_push BOOLEAN NOT NULL DEFAULT false;
 `
 
+var alterTableReposAddColumnThrottle = `
+ALTER TABLE repos ADD COLUMN repo_throttle INTEGER NOT NULL DEFAULT 0;
+`
+
 //
 // 003_create_table_perms.sql
 //
@@ -382,6 +398,10 @@ var createIndexBuildsRef = `
 CREATE INDEX ix_build_ref ON builds (build_repo_id, build_ref);
 `
 
+var alterTableBuildsAddColumnDebug = `
+ALTER TABLE builds ADD COLUMN build_debug BOOLEAN NOT NULL DEFAULT false;
+`
+
 //
 // 005_create_table_stages.sql
 //
@@ -448,6 +468,10 @@ BEGIN
     DELETE FROM stages_unfinished WHERE stage_id = OLD.stage_id;
   END IF;
 END;
+`
+
+var alterTableStagesAddColumnLimitRepos = `
+ALTER TABLE stages ADD COLUMN stage_limit_repo INTEGER NOT NULL DEFAULT 0;
 `
 
 //

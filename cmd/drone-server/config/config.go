@@ -51,6 +51,7 @@ type (
 		Agent        Agent
 		AzureBlob    AzureBlob
 		Convert      Convert
+		Cleanup      Cleanup
 		Cron         Cron
 		Cloning      Cloning
 		Database     Database
@@ -58,6 +59,7 @@ type (
 		Docker       Docker
 		HTTP         HTTP
 		Jsonnet      Jsonnet
+		Starlark     Starlark
 		Logging      Logging
 		Prometheus   Prometheus
 		Proxy        Proxy
@@ -96,6 +98,13 @@ type (
 		Pull       string `envconfig:"DRONE_GIT_IMAGE_PULL" default:"IfNotExists"`
 	}
 
+	Cleanup struct {
+		Disabled bool          `envconfig:"DRONE_CLEANUP_DISABLED"`
+		Interval time.Duration `envconfig:"DRONE_CLEANUP_INTERVAL"         default:"24h"`
+		Running  time.Duration `envconfig:"DRONE_CLEANUP_DEADLINE_RUNNING" default:"24h"`
+		Pending  time.Duration `envconfig:"DRONE_CLEANUP_DEADLINE_PENDING" default:"24h"`
+	}
+
 	// Cron provides the cron configuration.
 	Cron struct {
 		Disabled bool          `envconfig:"DRONE_CRON_DISABLED"`
@@ -127,6 +136,11 @@ type (
 	// Jsonnet configures the jsonnet plugin
 	Jsonnet struct {
 		Enabled bool `envconfig:"DRONE_JSONNET_ENABLED"`
+	}
+
+	// Starlark configures the starlark plugin
+	Starlark struct {
+		Enabled bool `envconfig:"DRONE_STARLARK_ENABLED"`
 	}
 
 	// Kubernetes provides kubernetes configuration
@@ -180,6 +194,10 @@ type (
 		Filter     []string `envconfig:"DRONE_REPOSITORY_FILTER"`
 		Visibility string   `envconfig:"DRONE_REPOSITORY_VISIBILITY"`
 		Trusted    bool     `envconfig:"DRONE_REPOSITORY_TRUSTED"`
+
+		// THIS SETTING IS INTERNAL USE ONLY AND SHOULD
+		// NOT BE USED OR RELIED UPON IN PRODUCTION.
+		Ignore []string `envconfig:"DRONE_REPOSITORY_IGNORE"`
 	}
 
 	// Registries provides the registry configuration.
@@ -300,24 +318,27 @@ type (
 
 	// Yaml provides the yaml webhook configuration.
 	Yaml struct {
-		Endpoint   string `envconfig:"DRONE_YAML_ENDPOINT"`
-		Secret     string `envconfig:"DRONE_YAML_SECRET"`
-		SkipVerify bool   `envconfig:"DRONE_YAML_SKIP_VERIFY"`
+		Endpoint   string        `envconfig:"DRONE_YAML_ENDPOINT"`
+		Secret     string        `envconfig:"DRONE_YAML_SECRET"`
+		SkipVerify bool          `envconfig:"DRONE_YAML_SKIP_VERIFY"`
+		Timeout    time.Duration `envconfig:"DRONE_YAML_TIMEOUT" default:"1m"`
 	}
 
 	// Convert provides the converter webhook configuration.
 	Convert struct {
-		Extension  string `envconfig:"DRONE_CONVERT_PLUGIN_EXTENSION"`
-		Endpoint   string `envconfig:"DRONE_CONVERT_PLUGIN_ENDPOINT"`
-		Secret     string `envconfig:"DRONE_CONVERT_PLUGIN_SECRET"`
-		SkipVerify bool   `envconfig:"DRONE_CONVERT_PLUGIN_SKIP_VERIFY"`
+		Extension  string        `envconfig:"DRONE_CONVERT_PLUGIN_EXTENSION"`
+		Endpoint   string        `envconfig:"DRONE_CONVERT_PLUGIN_ENDPOINT"`
+		Secret     string        `envconfig:"DRONE_CONVERT_PLUGIN_SECRET"`
+		SkipVerify bool          `envconfig:"DRONE_CONVERT_PLUGIN_SKIP_VERIFY"`
+		Timeout    time.Duration `envconfig:"DRONE_CONVERT_TIMEOUT" default:"1m"`
 	}
 
 	// Validate provides the validation webhook configuration.
 	Validate struct {
-		Endpoint   string `envconfig:"DRONE_VALIDATE_PLUGIN_ENDPOINT"`
-		Secret     string `envconfig:"DRONE_VALIDATE_PLUGIN_SECRET"`
-		SkipVerify bool   `envconfig:"DRONE_VALIDATE_PLUGIN_SKIP_VERIFY"`
+		Endpoint   string        `envconfig:"DRONE_VALIDATE_PLUGIN_ENDPOINT"`
+		Secret     string        `envconfig:"DRONE_VALIDATE_PLUGIN_SECRET"`
+		SkipVerify bool          `envconfig:"DRONE_VALIDATE_PLUGIN_SKIP_VERIFY"`
+		Timeout    time.Duration `envconfig:"DRONE_VALIDATE_TIMEOUT" default:"1m"`
 	}
 
 	//
